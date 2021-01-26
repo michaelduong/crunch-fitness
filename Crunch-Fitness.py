@@ -2,6 +2,7 @@ import requests
 import json
 import schedule
 import time
+from datetime import datetime
 
 def fetch_capacity():
     tustin_url = "https://www.crunch.com/crunch_core/clubs/143"
@@ -27,8 +28,12 @@ def fetch_capacity():
         current_fv_capacity = json_response_fv["current_occupancy"]
         percent_full_fv = str(round((current_fv_capacity / max_fv_capacity) * 100, 2))
 
+    now = datetime.now()
+    current_time = now.strftime("%H:%M:%S")
+
+    print("Fetching current capacity at", current_time)
     print("Tustin Crunch gym is currently " + str(current_tustin_capacity) + "/" + str(max_tustin_capacity) + " " + "(" + percent_full_tustin + "% full)")
-    print("Fountain Valley Crunch gym is currently " + str(current_fv_capacity) + "/" + str(max_fv_capacity) + " " + "(" + percent_full_fv + "% full)")
+    print("Fountain Valley Crunch gym is currently " + str(current_fv_capacity) + "/" + str(max_fv_capacity) + " " + "(" + percent_full_fv + "% full)\n")
 
 schedule.every(5).minutes.do(fetch_capacity)
 
